@@ -1,5 +1,5 @@
 `include "reversibleCarrySkipOperator.v"
-
+/*
 module CSA(X, Y, Z, pseudosuma, pseudocarry);
     input [31:0] X, Y, Z; //esta bien que sea de 32 bits?
     output [31:0] pseudosuma, pseudocarry;
@@ -10,7 +10,7 @@ module CSA(X, Y, Z, pseudosuma, pseudocarry);
     assign pseudocarry = (X & Y) | ((X | Y) & Z);
     assign pseudocarry = pseudocarry << 1;  //desplazo a izquierda un bit el pseudocarry
 
-endmodule
+endmodule*/
 
 
 module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);

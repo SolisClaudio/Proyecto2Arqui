@@ -1,6 +1,6 @@
-module P_FOp(X, Y, CBin, result, CBout);
+module fullAdder(X, Y, CBin, result, CBout);
     input X, Y, R, CBin;
-    output result;
+    output CBout, result;
     
     wire G, P;
     
@@ -11,6 +11,28 @@ module P_FOp(X, Y, CBin, result, CBout);
     assign CBout = G | (P & CBin); 
 endmodule
 
+module CAS(Rin, Din, P, Cin, Cout, Rout);
+    input Cin, Rin;
+    inout P, Din;
+    output Cout, Rout;
+
+    assign sumaResta = P ^ Din;
+    fullAdder f(Rin, sumaResta, Cin, Rout, Cout);
+
+endmodule
+
+module NRAD(X, Y, Q, R);
+    input [3:0] X;
+    output [1:0] Y;
+    output [2:0] Q, R;
+
+    wire [2:0] restoFila1;
+
+    CAS[3:0] fila1(X[4:2], Y[2:0], X[4:2], restoFila1);
+
+endmodule
+
+/*
 
 module tester(X, Y, Q, R);
     output [3:0] X;
@@ -49,4 +71,4 @@ module testbench;
     
     NRAD divisor(X,Y,Q,R);
     tester t(X,Y,Q,R);
-endmodule
+endmodule*/

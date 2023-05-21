@@ -41,19 +41,19 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
     always @(posedge clk) begin
 
         //Genero Operandos
-        operando1 = ordenOperandos & {32{multiplicador[0]}}; //padding
+        operando1 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos << 1;
         multiplicador = multiplicador >> 1;
 
-        operando2 = ordenOperandos & {32{multiplicador[0]}}; //padding
+        operando2 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos<<1;
         multiplicador = multiplicador >> 1;
 
-        operando3 = ordenOperandos & {32{multiplicador[0]}}; //padding
+        operando3 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos<<1;
         multiplicador = multiplicador >> 1;
 
-        operando4 = ordenOperandos & {32{multiplicador[0]}}; //padding
+        operando4 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos<<1;
         multiplicador = multiplicador >> 1;
 

@@ -13,7 +13,7 @@ endmodule
 
 module CAS(Rin, Din, P, Cin, Cout, Rout);
     input Cin, Rin;
-    inout P, Din;
+    input P, Din;
     output Cout, Rout;
 
     assign sumaResta = P ^ Din;
@@ -23,16 +23,26 @@ endmodule
 
 module NRAD(X, Y, Q, R);
     input [3:0] X;
-    output [1:0] Y;
+    input [1:0] Y;
     output [2:0] Q, R;
+sS
+    wire [4:0] divdidendo;
+    wire [2:0] divisor;
+    wire P;
+    wire [2:0] restoFila1, CinFila1, restoFila2;
+    wire [1:0] CoutFila1, CoutFila2, CoutFila3;
 
-    wire [2:0] restoFila1;
+    assign dividendo = {1'b0 ,X};
+    assign divisor = {1'b0 ,Y};
+    assign P = dividendo[4] ^ divisor[2];
 
-    CAS[3:0] fila1(X[4:2], Y[2:0], X[4:2], restoFila1);
+
+
+    CAS fila1[2:0](dividendo[4:2]                   , divisor[2:0]  , {3{P}}     , {CoutFila1, P}    , {Q[2],CoutFila1}  , restoFila1),
+        fila2[2:0]({restoFila1[1:0], dividendo[1]}  , divisor[2:0]  , {3{Q[0]}}  , {CoutFila2, Q[2]} , {Q[1], CoutFila2} , restoFila2),
+        fila3[2:0]({restoFila2[1:0], dividendo[0]}  , divisor[2:0]  , {3{Q[1]}}  , {CoutFila3, Q[1]} , {Q[0], CoutFila3} , R);
 
 endmodule
-
-/*
 
 module tester(X, Y, Q, R);
     output [3:0] X;
@@ -71,4 +81,4 @@ module testbench;
     
     NRAD divisor(X,Y,Q,R);
     tester t(X,Y,Q,R);
-endmodule*/
+endmodule

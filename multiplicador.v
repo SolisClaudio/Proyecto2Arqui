@@ -14,6 +14,7 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
 
     initial
     begin
+        //valor inicial de los operandos
         ordenOperandos[15:0] = X[15:0];
         ordenOperandos[31:16] = 8'b0;
         multiplicador = Y;
@@ -40,7 +41,7 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
 
     always @(posedge clk) begin
 
-        //Genero Operandos
+        //Inicio de generacion de  Operandos
         operando1 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos << 1;
         multiplicador = multiplicador >> 1;
@@ -56,6 +57,7 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
         operando4 = ordenOperandos & {32{multiplicador[0]}}; 
         ordenOperandos = ordenOperandos<<1;
         multiplicador = multiplicador >> 1;
+        //Fin de generacion de operandos
 
         //CSA 1
         A = (operando1 & operando2) | ((operando1 | operando2) & operando3);

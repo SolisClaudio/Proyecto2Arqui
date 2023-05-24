@@ -27,19 +27,19 @@ module NRAD(X, Y, Q, R);
     wire [2:0] restoFila1, CinFila1, restoFila2, restoFila3;
     wire [1:0] CoutFila1, CoutFila2, CoutFila3;
 
-    assign dividendo = {1'b0 ,X};
+    assign dividendo = {1'b0 ,X};f
     assign divisor = {1'b0 ,Y};
 
     assign P = (~dividendo[4]) ^ divisor[2];
 
 
-    CAS fila1[2:0](dividendo[4:2]                   , divisor[2:0]  , {P, P, P}     , {CoutFila1[1:0], P}    , {Q[2],CoutFila1[1:0]}  , restoFila1[2:0]);
-    CAS fila2[2:0]({restoFila1[1:0], dividendo[1]}  , divisor[2:0]  , {Q[2], Q[2], Q[2]}  , {CoutFila2[1:0], Q[2]} , {Q[1], CoutFila2[1:0]} , restoFila2[2:0]);
-    CAS fila3[2:0]({restoFila2[1:0], dividendo[0]}  , divisor[2:0]  , {Q[1],Q[1],Q[1]}  , {CoutFila3, Q[1]} , {Q[0], CoutFila3[1:0]} , restoFila3[2:0]);
+    CAS fila1[2:0](dividendo[4:2]                 , divisor[2:0], P          , {CoutFila1[1:0], P},      {Q[2],CoutFila1[1:0]},     restoFila1[2:0]);
+    CAS fila2[2:0]({restoFila1[1:0], dividendo[1]}, divisor[2:0], {3{Q[2]}}  , {CoutFila2[1:0], Q[2]},   {Q[1], CoutFila2[1:0]},    restoFila2[2:0]);
+    CAS fila3[2:0]({restoFila2[1:0], dividendo[0]}, divisor[2:0], {3{Q[1]}}  , {CoutFila3, Q[1]}, {Q[0], CoutFila3[1:0]},           restoFila3[2:0]);
 
     wire [2:0] correccion, carry;
-    assign correccion = {2{restoFila3[2]}} & divisor;
-    fullAdder correccionFinal[2:0](correccion, restoFila3, {carry[1:0], 1'b0}, R[2:0], carry[2:0]);
+    assign correccion = {3{restoFila3[2]}} & divisor;
+    fullAdder rippleAdder[2:0](correccion, restoFila3, {carry[1:0], 1'b0}, R[2:0], carry[2:0]);
     
 endmodule
 

@@ -27,7 +27,7 @@ module NRAD(X, Y, Q, R);
     wire [2:0] restoFila1, CinFila1, restoFila2, restoFila3;
     wire [1:0] CoutFila1, CoutFila2, CoutFila3;
 
-    assign dividendo = {1'b0 ,X};fdd
+    assign dividendo = {1'b0 ,X};
     assign divisor = {1'b0 ,Y};
 
     assign P = (~dividendo[4]) ^ divisor[2];

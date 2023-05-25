@@ -10,7 +10,7 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
     
     reg [31:0] ordenOperandos, operando1, operando2, operando3, operando4; //operando1, operando2, operando3, operando4;
     reg [15:0] multiplicador;
-    reg [31:0] A, B, C, D, E, F, G ,H;
+    reg [31:0] A, B, C, D, E, F;
 
     initial
     begin
@@ -24,6 +24,7 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
 
     always @(rst)
     begin
+        //rst - Reset del contenido de los registros del modulo
         ordenOperandos[15:0] = X[15:0];
         ordenOperandos[31:16] = 8'b0;
         multiplicador[15:0] = Y[15:0];
@@ -35,8 +36,6 @@ module WallaceTreePipeline(X, Y, clk, rst, pseudosuma, pseudocarry);
         D=0;
         E=0;
         F=0;
-        G=0;
-        H=0;
     end
 
     always @(posedge clk) begin
@@ -118,7 +117,13 @@ module tester(x, y, r, cin, clk, rst, p);
         #9 rst=1;
         #1 rst=0; x = 23690; y=9520; // p=225.528.800
         #9 rst=1; 
-        #1 rst=0; x = 65500; y =65000; //p=4.257.500.000     
+        #1 rst=0; x = 65500; y =65000; //p=4.257.500.000 
+        #9 rst=1; 
+        #1 rst=0; x = 65500; y =0;
+        #9 rst=1; 
+        #1 rst=0; x = 0; y =65000;      
+        #9 rst=1; 
+        #1 rst=0; x = 0; y =0; 
         #10 $finish;
     end
 

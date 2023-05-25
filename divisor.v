@@ -10,7 +10,8 @@ module CAS(Rin, Din, P, Cin, Cout, Rout);
     input Cin, Rin;
     input P, Din;
     output Cout, Rout;
-
+    wire sumaResta;
+    
     assign sumaResta = P ^ Din;
     fullAdder f(Rin, sumaResta, Cin, Rout, Cout);
 
@@ -27,16 +28,21 @@ module NRAD(X, Y, Q, R);
     wire [2:0] restoFila1, CinFila1, restoFila2, restoFila3;
     wire [1:0] CoutFila1, CoutFila2, CoutFila3;
 
+    //se expande el tamaño del divisor y dividendo en 1 bit, ingresando un cero a izquierda
     assign dividendo = {1'b0 ,X};
     assign divisor = {1'b0 ,Y};
 
+    //asgianción inicial de P
     assign P = (~dividendo[4]) ^ divisor[2];
 
-
+    //primer fila de CAS
     CAS fila1[2:0](dividendo[4:2]                 , divisor[2:0], P          , {CoutFila1[1:0], P},      {Q[2],CoutFila1[1:0]},     restoFila1[2:0]);
+    //segunda fila de CAS
     CAS fila2[2:0]({restoFila1[1:0], dividendo[1]}, divisor[2:0], {3{Q[2]}}  , {CoutFila2[1:0], Q[2]},   {Q[1], CoutFila2[1:0]},    restoFila2[2:0]);
+    //tercer fila de CAS
     CAS fila3[2:0]({restoFila2[1:0], dividendo[0]}, divisor[2:0], {3{Q[1]}}  , {CoutFila3, Q[1]}, {Q[0], CoutFila3[1:0]},           restoFila3[2:0]);
 
+    //correccion de resto en caso de resto negativo
     wire [2:0] correccion, carry;
     assign correccion = {3{restoFila3[2]}} & divisor;
     fullAdder rippleAdder[2:0](correccion, restoFila3, {carry[1:0], 1'b0}, R[2:0], carry[2:0]);
